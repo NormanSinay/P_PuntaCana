@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Punta Cana Tracker</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>Punta Cana Tracker</h1>
+    <div id="countdown">
+      <h2>Abordaje:</h2>
+      <div id="timer">
+        <span id="days">00</span>d : <span id="hours">00</span>h : <span id="minutes">00</span>m : <span id="seconds">00</span>s
+      </div>
+    </div>
+    <div class="stages">
+      <div id="stage1" class="stage">
+        <h2>Preparándose Para El Viaje</h2>
+        <div class="animation luggage"></div>
+      </div>
+      <div id="stage2" class="stage hidden">
+        <h2>Vuelo</h2>
+        <div class="progress-bar-container">
+          <div id="progress-bar"></div>
+        </div>
+      </div>
+      <div id="stage3" class="stage hidden">
+        <h2>En Destino A: Punta Cana</h2>
+        <div class="animation beach"></div>
+      </div>
+    </div>
+    <div id="thumbnail-container" class="thumbnails">
+      <div class="thumbnail hidden" id="thumbnail-flight">
+        <h3>Vuelo</h3>
+        <div class="thumbnail-animation airplane"></div>
+      </div>
+      <div class="thumbnail hidden" id="thumbnail-beach">
+        <h3>En Destino: Punta Cana</h3>
+        <div class="thumbnail-animation beach"></div>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
