@@ -3,33 +3,38 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Travel Tracker</title>
+  <title>Punta Cana Tracker</title>
   <link rel="stylesheet" href="styles.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 </head>
 <body>
   <div class="container">
-    <h1>Travel Tracker</h1>
+    <h1>Punta Cana Tracker</h1>
     <div id="countdown">
-      <h2>Time Left:</h2>
+      <h2>Cuenta Atrás:</h2>
       <div id="timer">
         <span id="days">00</span>d : <span id="hours">00</span>h : <span id="minutes">00</span>m : <span id="seconds">00</span>s
       </div>
     </div>
+
     <div class="stages">
       <div id="stage1" class="stage">
-        <h2>Preparing for the Trip</h2>
-        <div class="animation luggage"></div>
+        <h2>Preparándose para el viaje</h2>
+        <div class="animation">
+          <img src="./images/maleta.jpg" alt="Luggage Preparation">
+        </div>
       </div>
       <div id="stage2" class="stage hidden">
-        <h2>On the Flight</h2>
+        <h2>En Vuelo</h2>
         <div class="progress-bar-container">
           <div id="progress-bar"></div>
         </div>
       </div>
       <div id="stage3" class="stage hidden">
-        <h2>At the Destination: Punta Cana</h2>
-        <div class="animation beach"></div>
+        <h2>En el destino a Punta Cana</h2>
+        <div class="animation">
+          <img src="./images/playa.jpg" alt="Destination Beach">
+        </div>
       </div>
     </div>
 

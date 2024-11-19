@@ -11,7 +11,7 @@ let currentStage = 0;
 let interval;
 
 // Obtener fecha de inicio desde el backend
-fetch('http://localhost:3000/api/fecha-inicio')
+fetch('https://p-puntacanaback.onrender.com/api/fecha-inicio')
   .then(response => response.json())
   .then(data => {
     fechaInicio = new Date(data.fechaInicio);
@@ -29,18 +29,11 @@ function initializeStages() {
   }
 }
 
-// Convertir hora a Guatemala
-function convertToGuatemalaTime(date) {
-  const guatemalaOffset = -6; // UTC -6
-  const utcTime = date.getTime() + date.getTimezoneOffset() * 60000;
-  return new Date(utcTime + guatemalaOffset * 3600000);
-}
-
 // Actualizar cuenta regresiva
 function updateCountdown(targetDate) {
   clearInterval(interval);
   interval = setInterval(() => {
-    const now = convertToGuatemalaTime(new Date());
+    const now = new Date();
     const distance = targetDate - now;
 
     if (distance <= 0) {
@@ -82,11 +75,10 @@ function moveToNextStage() {
 // Animar barra de progreso
 function startProgressBar() {
   const progressBar = document.getElementById('progress-bar');
-  progressBar.style.width = '0'; // Reinicia la barra
+  progressBar.style.width = '0';
   progressBar.style.animation = 'loading 5s linear forwards';
 
-  // Avanzar a la siguiente etapa después de que la barra se llene
   setTimeout(() => {
     moveToNextStage();
-  }, 5000); // Duración de la barra de carga
+  }, 5000);
 }
