@@ -1,97 +1,97 @@
 /* General styles */
 body {
-    font-family: Arial, sans-serif;
-    background: #f0f8ff;
-    margin: 0;
-    padding: 0;
-    text-align: center;
-  }
-  
-  .container {
-    max-width: 600px;
-    margin: 20px auto;
-    padding: 20px;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  h1 {
-    font-size: 2rem;
-    color: #333;
-  }
-  
-  #countdown {
-    margin: 20px 0;
-    font-size: 1.2rem;
-  }
-  
-  .stages {
-    margin-top: 40px;
-  }
-  
-  .stage {
-    margin-top: 20px;
-  }
-  
-  .hidden {
-    display: none;
-  }
-  
-  /* Animations */
-  .animation {
-    margin: 20px auto;
-    width: 200px;
-    height: 200px;
-  }
-  
-  .luggage {
-    background: url('./images/maleta.jpg') no-repeat center/contain;
-  }
-  
-  .airplane {
-    background: url('./images/avion.jpg') no-repeat center/contain;
-  }
-  
-  .beach {
-    background: url('./images/playa.jpg') no-repeat center/contain;
-  }
-  
-  /* Thumbnails */
-  .thumbnails {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-  }
-  
-  .thumbnail {
-    margin: 0 10px;
-    text-align: center;
-  }
-  
-  .thumbnail-animation {
-    width: 100px;
-    height: 100px;
-    background-size: cover;
-    background-position: center;
-  }
-  
-  /* Progress bar */
-  .progress-bar-container {
-    width: 80%;
-    height: 20px;
-    background-color: #e0e0e0;
-    border-radius: 10px;
-    margin: 20px auto;
-    overflow: hidden;
-    position: relative;
-  }
-  
-  #progress-bar {
-    width: 0;
-    height: 100%;
-    background-color: #4caf50;
-    border-radius: 10px;
-    transition: width 2s linear;
-  }
-  
+  font-family: Arial, sans-serif;
+  background: #f0f8ff;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.container {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  font-size: 2rem;
+  color: #333;
+}
+
+#countdown {
+  margin: 20px 0;
+  font-size: 1.2rem;
+}
+
+.stages {
+  margin-top: 40px;
+}
+
+.stage {
+  margin-top: 20px;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Animations */
+.animation {
+  margin: 20px auto;
+  width: 200px;
+  height: 200px;
+}
+
+.luggage {
+  background: url('./images/maleta.jpg') no-repeat center/contain;
+}
+
+.airplane {
+  background: url('./images/avion.jpg') no-repeat center/contain;
+}
+
+.beach {
+  background: url('./images/playa.jpg') no-repeat center/contain;
+}
+
+/* Thumbnails */
+.thumbnails {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+.thumbnail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0.5; /* Opaco por defecto */
+  transition: opacity 0.3s ease;
+}
+
+.thumbnail.active {
+  opacity: 1; /* Activo completamente visible */
+}
+
+.thumb {
+  width: 50px;
+  height: 50px;
+  background-size: cover;
+  background-position: center;
+  margin-bottom: 5px;
+}
+
+.thumb.luggage {
+  background: url('./images/maleta.jpg') no-repeat center/contain;
+}
+
+.thumb.airplane {
+  background: url('./images/avion.jpg') no-repeat center/contain;
+}
+
+.thumb.beach {
+  background: url('./images/playa.jpg') no-repeat center/contain;
+}
