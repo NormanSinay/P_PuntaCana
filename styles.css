@@ -43,55 +43,55 @@ h1 {
   margin: 20px auto;
   width: 200px;
   height: 200px;
-}
-
-.luggage {
-  background: url('./images/maleta.jpg') no-repeat center/contain;
-}
-
-.airplane {
-  background: url('./images/avion.jpg') no-repeat center/contain;
-}
-
-.beach {
-  background: url('./images/playa.jpg') no-repeat center/contain;
-}
-
-/* Thumbnails */
-.thumbnails {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 30px;
+  border-radius: 20px; /* Imagen con bordes redondeados */
+  overflow: hidden;
+  border: 3px solid #ddd; /* Borde alrededor de la imagen */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para un efecto elegante */
 }
 
 .thumbnail {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  opacity: 0.5; /* Opaco por defecto */
-  transition: opacity 0.3s ease;
+  margin: 5px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%; /* Miniatura redonda */
+  overflow: hidden;
+  border: 2px solid #ddd;
+  display: inline-block;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.3s ease-in-out;
 }
 
 .thumbnail.active {
-  opacity: 1; /* Activo completamente visible */
+  border: 2px solid #4caf50;
+  transform: scale(1.1);
 }
 
-.thumb {
-  width: 50px;
-  height: 50px;
-  background-size: cover;
-  background-position: center;
-  margin-bottom: 5px;
+/* Progress bar */
+.progress-bar-container {
+  width: 80%;
+  height: 20px;
+  background-color: #e0e0e0;
+  border-radius: 10px;
+  margin: 20px auto;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.thumb.luggage {
-  background: url('./images/maleta.jpg') no-repeat center/contain;
+#progress-bar {
+  width: 0;
+  height: 100%;
+  background-color: #4caf50;
+  border-radius: 10px;
+  animation: loading 5s linear forwards;
 }
 
-.thumb.airplane {
-  background: url('./images/avion.jpg') no-repeat center/contain;
-}
-
-.thumb.beach {
-  background: url('./images/playa.jpg') no-repeat center/contain;
+@keyframes loading {
+  from {
+      width: 0%;
+  }
+  to {
+      width: 100%;
+  }
 }

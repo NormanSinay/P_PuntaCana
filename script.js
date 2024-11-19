@@ -10,33 +10,30 @@ const thumbnails = document.querySelectorAll('.thumbnail');
 let currentStage = 0;
 let interval;
 
-// Obtener fecha de inicio desde el backend y ajustarla al horario de Guatemala
+// Obtener fecha de inicio desde el backend
 fetch('http://localhost:3000/api/fecha-inicio')
   .then(response => response.json())
   .then(data => {
     fechaInicio = new Date(data.fechaInicio);
-    // Convertir la fecha al horario de Guatemala
-    fechaInicio = convertToGuatemalaTime(fechaInicio);
     initializeStages();
   })
   .catch(err => console.error('Error al obtener fecha de inicio:', err));
 
-// Convertir cualquier fecha al horario de Guatemala
-function convertToGuatemalaTime(date) {
-  // Crear la fecha como si estuviera en UTC y ajustar a la zona horaria de Guatemala
-  const utcOffset = -6; // UTC-6 es el huso horario de Guatemala
-  const localDate = new Date(date.getTime() + utcOffset * 60 * 60 * 1000);
-  return localDate;
-}
-
 // Inicializar etapas
 function initializeStages() {
-  const now = convertToGuatemalaTime(new Date());
+  const now = new Date();
   if (now >= fechaInicio) {
     moveToNextStage();
   } else {
     updateCountdown(fechaInicio);
   }
+}
+
+// Convertir hora a Guatemala
+function convertToGuatemalaTime(date) {
+  const guatemalaOffset = -6; // UTC -6
+  const utcTime = date.getTime() + date.getTimezoneOffset() * 60000;
+  return new Date(utcTime + guatemalaOffset * 3600000);
 }
 
 // Actualizar cuenta regresiva
@@ -77,11 +74,6 @@ function moveToNextStage() {
     thumbnails[currentStage].classList.add('active');
 
     if (currentStage === 1) startProgressBar();
-    if (currentStage < stages.length - 1) {
-      const nextStageDate = new Date(fechaInicio);
-      nextStageDate.setDate(fechaInicio.getDate() + (currentStage * 5));
-      updateCountdown(convertToGuatemalaTime(nextStageDate));
-    }
   } else {
     alert('Trip Completed!');
   }
@@ -90,6 +82,11 @@ function moveToNextStage() {
 // Animar barra de progreso
 function startProgressBar() {
   const progressBar = document.getElementById('progress-bar');
-  progressBar.style.width = '100%';
-  setTimeout(moveToNextStage, 5000); // Simula el tiempo del vuelo (5s)
+  progressBar.style.width = '0'; // Reinicia la barra
+  progressBar.style.animation = 'loading 5s linear forwards';
+
+  // Avanzar a la siguiente etapa después de que la barra se llene
+  setTimeout(() => {
+    moveToNextStage();
+  }, 5000); // Duración de la barra de carga
 }
