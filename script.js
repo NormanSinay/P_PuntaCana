@@ -6,25 +6,32 @@ const stages = [
   document.getElementById('stage2'),
   document.getElementById('stage3'),
 ];
-const thumbnails = {
-  flight: document.getElementById('thumbnail-flight'),
-  beach: document.getElementById('thumbnail-beach'),
-};
+const thumbnails = document.querySelectorAll('.thumbnail');
 let currentStage = 0;
 let interval;
 
-// Obtener fecha de inicio desde el backend
-fetch('https://p-puntacanaback.onrender.com/api/fecha-inicio')
+// Obtener fecha de inicio desde el backend y ajustarla al horario de Guatemala
+fetch('http://localhost:3000/api/fecha-inicio')
   .then(response => response.json())
   .then(data => {
     fechaInicio = new Date(data.fechaInicio);
+    // Convertir la fecha al horario de Guatemala
+    fechaInicio = convertToGuatemalaTime(fechaInicio);
     initializeStages();
   })
   .catch(err => console.error('Error al obtener fecha de inicio:', err));
 
+// Convertir cualquier fecha al horario de Guatemala
+function convertToGuatemalaTime(date) {
+  // Crear la fecha como si estuviera en UTC y ajustar a la zona horaria de Guatemala
+  const utcOffset = -6; // UTC-6 es el huso horario de Guatemala
+  const localDate = new Date(date.getTime() + utcOffset * 60 * 60 * 1000);
+  return localDate;
+}
+
 // Inicializar etapas
 function initializeStages() {
-  const now = new Date();
+  const now = convertToGuatemalaTime(new Date());
   if (now >= fechaInicio) {
     moveToNextStage();
   } else {
@@ -36,7 +43,7 @@ function initializeStages() {
 function updateCountdown(targetDate) {
   clearInterval(interval);
   interval = setInterval(() => {
-    const now = new Date();
+    const now = convertToGuatemalaTime(new Date());
     const distance = targetDate - now;
 
     if (distance <= 0) {
@@ -63,19 +70,17 @@ function updateCountdown(targetDate) {
 function moveToNextStage() {
   if (currentStage < stages.length - 1) {
     stages[currentStage].classList.add('hidden');
-    
-    // Mostrar la miniatura de la siguiente etapa
-    if (currentStage === 0) thumbnails.flight.classList.remove('hidden');
-    if (currentStage === 1) thumbnails.beach.classList.remove('hidden');
+    thumbnails[currentStage].classList.remove('active');
 
     currentStage++;
     stages[currentStage].classList.remove('hidden');
-    if (currentStage === 1) startProgressBar();
+    thumbnails[currentStage].classList.add('active');
 
+    if (currentStage === 1) startProgressBar();
     if (currentStage < stages.length - 1) {
       const nextStageDate = new Date(fechaInicio);
       nextStageDate.setDate(fechaInicio.getDate() + (currentStage * 5));
-      updateCountdown(nextStageDate);
+      updateCountdown(convertToGuatemalaTime(nextStageDate));
     }
   } else {
     alert('Trip Completed!');
