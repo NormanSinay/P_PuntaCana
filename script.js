@@ -1,84 +1,77 @@
-// Variables
-let fechaInicio;
-const countdownDisplay = document.getElementById('timer');
-const stages = [
-  document.getElementById('stage1'),
-  document.getElementById('stage2'),
-  document.getElementById('stage3'),
-];
-const thumbnails = document.querySelectorAll('.thumbnail');
-let currentStage = 0;
-let interval;
+document.addEventListener('DOMContentLoaded', () => {
+  const apiUrl = 'https://p-puntacanaback.onrender.com/api/etapas'; // Ruta del backend
+  const etapasContainer = document.getElementById('stage-info');
+  const countdownElement = document.getElementById('countdown');
+  const stageImageElement = document.getElementById('stage-image');
+  const stageNameElement = document.getElementById('stage-name');
+  const progressBar = document.getElementById('progress-bar');
 
-// Obtener fecha de inicio desde el backend
-fetch('https://p-puntacanaback.onrender.com/api/fecha-inicio')
-  .then(response => response.json())
-  .then(data => {
-    fechaInicio = new Date(data.fechaInicio);
-    initializeStages();
-  })
-  .catch(err => console.error('Error al obtener fecha de inicio:', err));
+  let etapas = [];
+  let currentEtapaIndex = 0;
 
-// Inicializar etapas
-function initializeStages() {
-  const now = new Date();
-  if (now >= fechaInicio) {
-    moveToNextStage();
-  } else {
-    updateCountdown(fechaInicio);
+  // Obtener etapas desde el backend
+  async function fetchEtapas() {
+    try {
+      const response = await fetch(apiUrl);
+      etapas = await response.json();
+      etapas.sort((a, b) => new Date(a.fechaInicio) - new Date(b.fechaInicio)); // Ordenar por fecha
+      setStage(0); // Inicializar con la primera etapa
+    } catch (error) {
+      console.error('Error al obtener las etapas:', error);
+    }
   }
-}
 
-// Actualizar cuenta regresiva
-function updateCountdown(targetDate) {
-  clearInterval(interval);
-  interval = setInterval(() => {
-    const now = new Date();
-    const distance = targetDate - now;
-
-    if (distance <= 0) {
-      clearInterval(interval);
-      moveToNextStage();
+  // Configurar una etapa específica
+  function setStage(index) {
+    if (index >= etapas.length) {
+      countdownElement.textContent = '¡Todas las etapas completadas!';
+      stageNameElement.textContent = '¡Fin del Viaje!';
+      stageImageElement.src = 'fin-del-viaje.png'; // Imagen final opcional
+      progressBar.style.width = '100%';
       return;
     }
 
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    currentEtapaIndex = index;
+    const etapa = etapas[index];
+    const fechaInicio = new Date(etapa.fechaInicio);
+    const duracionMs = etapa.duracion;
+    const fechaFin = new Date(fechaInicio.getTime() + duracionMs);
 
-    countdownDisplay.innerHTML = `
-      <span id="days">${days}</span>d : 
-      <span id="hours">${hours}</span>h : 
-      <span id="minutes">${minutes}</span>m : 
-      <span id="seconds">${seconds}</span>s
-    `;
-  }, 1000);
-}
+    stageNameElement.textContent = etapa.nombre;
+    stageImageElement.src = `images/${etapa.nombre.toLowerCase().replace(/\s+/g, '-')}.png`; // Imagen correspondiente a la etapa
+    stageImageElement.alt = etapa.nombre;
 
-// Mover a la siguiente etapa
-function moveToNextStage() {
-  if (currentStage < stages.length - 1) {
-    stages[currentStage].classList.add('hidden');
-    thumbnails[currentStage].classList.remove('active');
-
-    currentStage++;
-    stages[currentStage].classList.remove('hidden');
-    thumbnails[currentStage].classList.add('active');
-
-    if (currentStage === 1) startProgressBar();
-  } else {
-    alert('Trip Completed!');
+    startCountdown(fechaFin);
+    updateProgressBar(index);
   }
-}
 
-// Animar barra de progreso
-function startProgressBar() {
-  const progressBar = document.getElementById('progress-bar');
-  progressBar.style.width = '0';
-  progressBar.style.animation = 'loading 5s linear forwards';
+  // Iniciar cuenta regresiva
+  function startCountdown(fechaFin) {
+    clearInterval(window.countdownInterval); // Limpiar intervalos previos
+    window.countdownInterval = setInterval(() => {
+      const now = new Date();
+      const timeLeft = fechaFin - now;
 
-  setTimeout(() => {
-    moveToNextStage();
-  }, 5000);
-}
+      if (timeLeft <= 0) {
+        clearInterval(window.countdownInterval);
+        setStage(currentEtapaIndex + 1); // Pasar a la siguiente etapa
+      } else {
+        const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+        countdownElement.textContent = `${days}d : ${hours}h : ${minutes}m : ${seconds}s`;
+      }
+    }, 1000);
+  }
+
+  // Actualizar la barra de progreso
+  function updateProgressBar(index) {
+    const progress = ((index + 1) / etapas.length) * 100;
+    progressBar.style.width = `${progress}%`;
+  }
+
+  // Inicializar
+  fetchEtapas();
+});
